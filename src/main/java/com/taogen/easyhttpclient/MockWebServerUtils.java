@@ -2,6 +2,7 @@ package com.taogen.easyhttpclient;
 
 import com.taogen.commons.collection.MapUtils;
 import com.taogen.commons.network.HttpRequestUtil;
+import com.taogen.commons.network.vo.FormItem;
 import com.taogen.easyhttpclient.vo.HttpRequest;
 import com.taogen.easyhttpclient.vo.HttpRequestWithForm;
 import com.taogen.easyhttpclient.vo.HttpRequestWithJson;
@@ -13,8 +14,11 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import okio.Buffer;
 
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.taogen.commons.collection.MapUtils.multiValueMapEquals;
 import static org.junit.Assert.assertEquals;
@@ -27,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 public class MockWebServerUtils {
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String CONTENT_LENGTH = "Content-Length";
+
     /**
      * @param mockWebServer
      * @param responseBody
@@ -110,7 +115,7 @@ public class MockWebServerUtils {
         String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
         log.debug("content type: {}", contentType);
         log.debug("mockedRealRequest formData: {}", actualFormData);
-        LinkedHashMap<String, List<Object>> mockedFormDataMap = HttpRequestUtil.queryStringToMultiValueMap(actualFormData);
+        Map<String, List<Object>> mockedFormDataMap = HttpRequestUtil.queryStringToMultiValueMap(actualFormData);
         log.debug("mockedRealRequest formDataMap: {}", mockedFormDataMap);
         Map<String, List<Object>> requestFormDataMap = okHttpRequestWithFormData.getFormData();
         log.debug("okHttpRequestWithFormData formDataMap: {}", requestFormDataMap);
@@ -118,20 +123,19 @@ public class MockWebServerUtils {
     }
 
     public static void validateRequestWithMultipartForm(RecordedRequest mockedRealRequest,
-                                                        HttpRequestWithMultipart okHttpRequestWithFormData) {
+                                                        HttpRequestWithMultipart okHttpRequestWithFormData) throws IOException {
         validateRequestWithQueryString(mockedRealRequest, okHttpRequestWithFormData);
         // validate body
         log.debug("okHttpRequestWithFormData formData: {}", okHttpRequestWithFormData.getFormData());
-        String actualFormData = mockedRealRequest.getBody().readUtf8();
+        byte[] mockedRequestBodyBytes = mockedRealRequest.getBody().readByteArray();
         String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
-        log.debug("content type: {}", contentType);
-        log.debug("mockedRealRequest formData: {}", actualFormData);
-        LinkedHashMap<String, List<Object>> mockedFormDataMap = HttpRequestUtil.multipartDataToMultiValueMap(
-                actualFormData.getBytes(StandardCharsets.UTF_8), "--" + HttpRequestUtil.getBoundaryByContentType(contentType));
-        log.debug("mockedRealRequest formDataMap: {}", mockedFormDataMap);
-        Map<String, List<Object>> requestFormDataMap = okHttpRequestWithFormData.getFormData();
-        log.debug("okHttpRequestWithFormData formDataMap: {}", requestFormDataMap);
-        assertTrue(MapUtils.multiValueMapEquals(requestFormDataMap, mockedFormDataMap));
+        String boundary = HttpRequestUtil.getBoundaryByContentType(contentType);
+        byte[] httpRequestBody = HttpRequestUtil.multiValueMapToMultipartData(okHttpRequestWithFormData.getFormData(), boundary);
+        List<FormItem> mockedFormItems = HttpRequestUtil.convertBytesToFormItems(mockedRequestBodyBytes, boundary);
+        log.debug("mocked formItems: {}", mockedFormItems);
+        List<FormItem> httpRequestFormItems = HttpRequestUtil.convertBytesToFormItems(httpRequestBody, boundary);
+        log.debug("http request formItems: {}", httpRequestFormItems);
+        assertTrue(HttpRequestUtil.formItemsEqual(mockedFormItems, httpRequestFormItems));
     }
 
 }
