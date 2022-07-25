@@ -40,10 +40,10 @@ public class MockWebServerUtils {
     public static void enqueueMockedResponse(MockWebServer mockWebServer, byte[] responseBody, String contentType) {
         Buffer buffer = new Buffer();
         buffer.write(responseBody);
+        // note: Content-Length has been automatically set in MockResponse
         MockResponse mockedResponse = new MockResponse()
                 .setBody(buffer)
-                .addHeader(CONTENT_TYPE, contentType)
-                .addHeader(CONTENT_LENGTH, responseBody.length);
+                .addHeader(CONTENT_TYPE, contentType);
         mockWebServer.enqueue(mockedResponse);
     }
 
