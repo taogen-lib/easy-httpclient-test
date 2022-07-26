@@ -1,6 +1,6 @@
 package com.taogen.easyhttpclient.mockwebserver;
 
-import com.taogen.commons.collection.MapUtils;
+import com.taogen.commons.collection.MultiValueMapUtils;
 import com.taogen.commons.network.HttpRequestUtil;
 import com.taogen.commons.network.vo.FormItem;
 import com.taogen.easyhttpclient.enums.HttpMethod;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.taogen.commons.collection.MapUtils.multiValueMapEquals;
+import static com.taogen.commons.collection.MultiValueMapUtils.multiValueMapEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -85,8 +85,8 @@ public class MockWebServerUtils {
         log.debug("to validate headers");
         log.debug("okHttpRequest header: {}", okHttpRequest.getHeaders());
         log.debug("mockedRealRequest header: {}", mockedRealRequest.getHeaders().toMultimap());
-        assertTrue(MapUtils.multiStringValueMapContains(mockedRealRequest.getHeaders().toMultimap(),
-                MapUtils.multiObjectValueMapToMultiStringValueMap(okHttpRequest.getHeaders())));
+        assertTrue(MultiValueMapUtils.multiStringValueMapContains(mockedRealRequest.getHeaders().toMultimap(),
+                MultiValueMapUtils.multiObjectValueMapToMultiStringValueMap(okHttpRequest.getHeaders())));
         // validate query string params
         log.debug("to validate query params");
         Map<String, List<Object>> actualQueryParams = getQueryParamMapByRecordedRequest(mockedRealRequest);
@@ -135,7 +135,7 @@ public class MockWebServerUtils {
         log.debug("mockedRealRequest formDataMap: {}", mockedFormDataMap);
         Map<String, List<Object>> requestFormDataMap = okHttpRequestWithFormData.getFormData();
         log.debug("okHttpRequestWithFormData formDataMap: {}", requestFormDataMap);
-        assertTrue(MapUtils.multiValueMapEquals(requestFormDataMap, mockedFormDataMap));
+        assertTrue(MultiValueMapUtils.multiValueMapEquals(requestFormDataMap, mockedFormDataMap));
     }
 
     public static void validatePostWithMultipartForm(RecordedRequest mockedRealRequest,

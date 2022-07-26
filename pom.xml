@@ -56,7 +56,7 @@
 		<dependency>
 			<groupId>com.github.taogen-lib</groupId>
 			<artifactId>commons-java</artifactId>
-			 <version>782d9d7ca7</version>
+			 <version>4891c51a62</version>
 			<!--      <version>-SNAPSHOT</version>-->
 		</dependency>
 		<dependency>
