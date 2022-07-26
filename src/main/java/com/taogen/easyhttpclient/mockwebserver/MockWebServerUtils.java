@@ -3,6 +3,7 @@ package com.taogen.easyhttpclient.mockwebserver;
 import com.taogen.commons.collection.MapUtils;
 import com.taogen.commons.network.HttpRequestUtil;
 import com.taogen.commons.network.vo.FormItem;
+import com.taogen.easyhttpclient.enums.HttpMethod;
 import com.taogen.easyhttpclient.vo.HttpRequest;
 import com.taogen.easyhttpclient.vo.HttpRequestWithForm;
 import com.taogen.easyhttpclient.vo.HttpRequestWithJson;
@@ -97,9 +98,12 @@ public class MockWebServerUtils {
                 .collect(HashMap::new, (map, key) -> map.put(key, new ArrayList<>(requestUrl.queryParameterValues(key))), Map::putAll);
     }
 
-    public static void validateRequestWithJson(RecordedRequest mockedRealRequest,
-                                               HttpRequestWithJson okHttpRequestWithJson) {
+    public static void validatePostWithJson(RecordedRequest mockedRealRequest,
+                                            HttpRequestWithJson okHttpRequestWithJson) {
         validateRequestWithQueryString(mockedRealRequest, okHttpRequestWithJson);
+        assertEquals(HttpMethod.POST.name(), mockedRealRequest.getMethod());
+        String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
+        assertEquals(contentType, "application/json");
         // validate body
         log.debug("okHttpRequestWithJson body: {}", okHttpRequestWithJson.getJson());
         String actualBody = mockedRealRequest.getBody().readUtf8();
@@ -107,12 +111,14 @@ public class MockWebServerUtils {
         assertEquals(okHttpRequestWithJson.getJson(), actualBody);
     }
 
-    public static void validateRequestWithUrlEncodedForm(RecordedRequest mockedRealRequest, HttpRequestWithForm okHttpRequestWithFormData) {
+    public static void validatePostWithUrlEncodedForm(RecordedRequest mockedRealRequest, HttpRequestWithForm okHttpRequestWithFormData) {
         validateRequestWithQueryString(mockedRealRequest, okHttpRequestWithFormData);
+        assertEquals(HttpMethod.POST.name(), mockedRealRequest.getMethod());
+        String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
+        assertEquals(contentType, "application/x-www-form-urlencoded");
         // validate body
         log.debug("okHttpRequestWithFormData formData: {}", okHttpRequestWithFormData.getFormData());
         String actualFormData = mockedRealRequest.getBody().readUtf8();
-        String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
         log.debug("content type: {}", contentType);
         log.debug("mockedRealRequest formData: {}", actualFormData);
         Map<String, List<Object>> mockedFormDataMap = HttpRequestUtil.queryStringToMultiValueMap(actualFormData);
@@ -122,13 +128,15 @@ public class MockWebServerUtils {
         assertTrue(MapUtils.multiValueMapEquals(requestFormDataMap, mockedFormDataMap));
     }
 
-    public static void validateRequestWithMultipartForm(RecordedRequest mockedRealRequest,
-                                                        HttpRequestWithMultipart okHttpRequestWithFormData) throws IOException {
+    public static void validatePostWithMultipartForm(RecordedRequest mockedRealRequest,
+                                                     HttpRequestWithMultipart okHttpRequestWithFormData) throws IOException {
         validateRequestWithQueryString(mockedRealRequest, okHttpRequestWithFormData);
+        assertEquals(HttpMethod.POST.name(), mockedRealRequest.getMethod());
+        String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
+        assertTrue(contentType.startsWith("multipart/form-data"));
         // validate body
         log.debug("okHttpRequestWithFormData formData: {}", okHttpRequestWithFormData.getFormData());
         byte[] mockedRequestBodyBytes = mockedRealRequest.getBody().readByteArray();
-        String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
         String boundary = HttpRequestUtil.getBoundaryByContentType(contentType);
         byte[] httpRequestBody = HttpRequestUtil.multiValueMapToMultipartData(okHttpRequestWithFormData.getFormData(), boundary);
         List<FormItem> mockedFormItems = HttpRequestUtil.convertBytesToFormItems(mockedRequestBodyBytes, boundary);

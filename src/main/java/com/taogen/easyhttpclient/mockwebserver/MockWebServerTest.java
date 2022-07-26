@@ -37,9 +37,9 @@ public class MockWebServerTest {
         MockWebServerUtils.validateRequestWithQueryString(request, httpRequest);
     }
 
-    public static void testRequestWithJson(MockWebServer mockWebServer,
-                                              Function<String, HttpRequestWithJson>  getHttpRequest,
-                                              Function<HttpRequestWithJson, HttpResponse> getResponse) throws InterruptedException {
+    public static void testPostWithJson(MockWebServer mockWebServer,
+                                        Function<String, HttpRequestWithJson>  getHttpRequest,
+                                        Function<HttpRequestWithJson, HttpResponse> getResponse) throws InterruptedException {
         MockWebServerUtils.enqueueMockedResponse(mockWebServer, RESPONSE_BODY_1.getBytes(StandardCharsets.UTF_8), "application/json");
         String url = MockWebServerUtils.getMockedUrlByUri(mockWebServer, "/testRequestWithJson_post");
         log.info("url: {}", url);
@@ -51,12 +51,12 @@ public class MockWebServerTest {
         assertEquals(RESPONSE_BODY_1, new String(httpResponse.getBody(), StandardCharsets.UTF_8));
         // validate request
         RecordedRequest request = mockWebServer.takeRequest();
-        MockWebServerUtils.validateRequestWithJson(request, httpRequest);
+        MockWebServerUtils.validatePostWithJson(request, httpRequest);
     }
 
-    public static void testRequestWithUrlEncodedForm(MockWebServer mockWebServer,
-                                           Function<String, HttpRequestWithForm>  getHttpRequest,
-                                           Function<HttpRequestWithForm, HttpResponse> getResponse) throws InterruptedException {
+    public static void testPostWithUrlEncodedForm(MockWebServer mockWebServer,
+                                                  Function<String, HttpRequestWithForm>  getHttpRequest,
+                                                  Function<HttpRequestWithForm, HttpResponse> getResponse) throws InterruptedException {
         MockWebServerUtils.enqueueMockedResponse(mockWebServer, RESPONSE_BODY_1.getBytes(StandardCharsets.UTF_8), "application/json");
         String url = MockWebServerUtils.getMockedUrlByUri(mockWebServer, "/testRequestWithUrlEncodedForm_post");
         log.info("url: {}", url);
@@ -68,12 +68,12 @@ public class MockWebServerTest {
         assertEquals(RESPONSE_BODY_1, new String(httpResponse.getBody(), StandardCharsets.UTF_8));
         // validate request
         RecordedRequest request = mockWebServer.takeRequest();
-        MockWebServerUtils.validateRequestWithUrlEncodedForm(request, httpRequest);
+        MockWebServerUtils.validatePostWithUrlEncodedForm(request, httpRequest);
     }
 
-    public static void testRequestWithMultipartForm(MockWebServer mockWebServer,
-                                                     Function<String, HttpRequestWithMultipart>  getHttpRequest,
-                                                     Function<HttpRequestWithMultipart, HttpResponse> getResponse) throws InterruptedException, IOException {
+    public static void testPostWithMultipartForm(MockWebServer mockWebServer,
+                                                 Function<String, HttpRequestWithMultipart>  getHttpRequest,
+                                                 Function<HttpRequestWithMultipart, HttpResponse> getResponse) throws InterruptedException, IOException {
         MockWebServerUtils.enqueueMockedResponse(mockWebServer, RESPONSE_BODY_1.getBytes(StandardCharsets.UTF_8), "application/json");
         String url = MockWebServerUtils.getMockedUrlByUri(mockWebServer, "/testRequestWithMultipart_post");
         log.info("url: {}", url);
@@ -85,6 +85,6 @@ public class MockWebServerTest {
         assertEquals(RESPONSE_BODY_1, new String(httpResponse.getBody(), StandardCharsets.UTF_8));
         // validate request
         RecordedRequest request = mockWebServer.takeRequest();
-        MockWebServerUtils.validateRequestWithMultipartForm(request, httpRequest);
+        MockWebServerUtils.validatePostWithMultipartForm(request, httpRequest);
     }
 }
