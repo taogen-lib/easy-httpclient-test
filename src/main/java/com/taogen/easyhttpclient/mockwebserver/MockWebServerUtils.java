@@ -103,7 +103,7 @@ public class MockWebServerUtils {
         validateRequestWithQueryString(mockedRealRequest, okHttpRequestWithJson);
         assertEquals(HttpMethod.POST.name(), mockedRealRequest.getMethod());
         String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
-        assertEquals(contentType, "application/json");
+        assertTrue(contentType.contains("application/json"));
         // validate body
         log.debug("okHttpRequestWithJson body: {}", okHttpRequestWithJson.getJson());
         String actualBody = mockedRealRequest.getBody().readUtf8();
@@ -115,7 +115,7 @@ public class MockWebServerUtils {
         validateRequestWithQueryString(mockedRealRequest, okHttpRequestWithFormData);
         assertEquals(HttpMethod.POST.name(), mockedRealRequest.getMethod());
         String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
-        assertEquals(contentType, "application/x-www-form-urlencoded");
+        assertTrue(contentType.contains("application/x-www-form-urlencoded"));
         // validate body
         log.debug("okHttpRequestWithFormData formData: {}", okHttpRequestWithFormData.getFormData());
         String actualFormData = mockedRealRequest.getBody().readUtf8();
@@ -133,7 +133,7 @@ public class MockWebServerUtils {
         validateRequestWithQueryString(mockedRealRequest, okHttpRequestWithFormData);
         assertEquals(HttpMethod.POST.name(), mockedRealRequest.getMethod());
         String contentType = mockedRealRequest.getHeader(CONTENT_TYPE);
-        assertTrue(contentType.startsWith("multipart/form-data"));
+        assertTrue(contentType.contains("multipart/form-data"));
         // validate body
         log.debug("okHttpRequestWithFormData formData: {}", okHttpRequestWithFormData.getFormData());
         byte[] mockedRequestBodyBytes = mockedRealRequest.getBody().readByteArray();
