@@ -153,9 +153,7 @@ public class MockWebServerUtils {
         String boundary = HttpRequestUtil.getBoundaryByContentType(contentType);
         byte[] httpRequestBody = HttpRequestUtil.multiValueMapToMultipartData(okHttpRequestWithFormData.getFormData(), boundary);
         List<FormItem> mockedFormItems = HttpRequestUtil.convertBytesToFormItems(mockedRequestBodyBytes, boundary);
-        log.debug("mocked formItems: {}", mockedFormItems);
         List<FormItem> httpRequestFormItems = HttpRequestUtil.convertBytesToFormItems(httpRequestBody, boundary);
-        log.debug("http request formItems: {}", httpRequestFormItems);
         assertTrue(HttpRequestUtil.formItemsEqual(mockedFormItems, httpRequestFormItems));
     }
 
