@@ -1,88 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.github.taogen-lib</groupId>
-		<artifactId>commons-parent</artifactId>
-		<version>-SNAPSHOT</version>
-	</parent>
-	<groupId>com.taogen.easyhttpclient</groupId>
-	<artifactId>easy-httpclient-test</artifactId>
-	<version>1.0-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.github.taogen-lib</groupId>
+        <artifactId>commons-parent</artifactId>
+        <version>-SNAPSHOT</version>
+    </parent>
+    <groupId>com.taogen.easyhttpclient</groupId>
+    <artifactId>easy-httpclient-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
-	<name>Taogen Easy HttpClient Test</name>
-	<!-- FIXME change it to the project's website -->
-	<url>http://www.example.com</url>
+    <name>Taogen Easy HttpClient Test</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
 
-	<properties>
-	</properties>
+    <properties>
+    </properties>
 
-	<repositories>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
-	<dependencies>
-		<!-- basic -->
-		<dependency>
-			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>mockwebserver</artifactId>
-			<scope>compile</scope>
-		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.junit.jupiter</groupId>-->
-<!--			<artifactId>junit-jupiter-engine</artifactId>-->
-<!--			<scope>compile</scope>-->
-<!--			<version>5.8.2</version>-->
-<!--		</dependency>-->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
+    <dependencies>
+        <!-- basic -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <!--		<dependency>-->
+        <!--			<groupId>org.junit.jupiter</groupId>-->
+        <!--			<artifactId>junit-jupiter-engine</artifactId>-->
+        <!--			<scope>compile</scope>-->
+        <!--			<version>5.8.2</version>-->
+        <!--		</dependency>-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-		<!-- httpclient -->
-		<dependency>
-			<groupId>com.github.taogen-lib</groupId>
-			<artifactId>commons-java</artifactId>
-			 <version>4891c51a62</version>
-			<!--      <version>-SNAPSHOT</version>-->
-		</dependency>
-		<dependency>
-			<groupId>com.github.taogen-lib</groupId>
-			<artifactId>easy-httpclient-common</artifactId>
-			<version>-SNAPSHOT</version>
-		</dependency>
+        <!-- httpclient -->
+        <dependency>
+            <groupId>com.github.taogen-lib.taogen-commons</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.taogen-lib</groupId>
+            <artifactId>easy-httpclient-common</artifactId>
+            <version>d54974e580</version>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
-	<build>
-		<plugins>
-			<!-- plugin for mvn compile -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<!-- plugins for mvn test -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <!-- plugin for mvn compile -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <!-- plugins for mvn test -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
